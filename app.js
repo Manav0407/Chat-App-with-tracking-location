@@ -9,7 +9,7 @@ import { User } from "./models/user.js";
 import bodyParser from "body-parser";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
-import { createUser } from "./fakeData/fakeusers.js";
+// import { createUser } from "./fakeData/fakeusers.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import { v4 as uuid } from "uuid";
