@@ -37,7 +37,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://chat-app-frontend-pxia.vercel.app",
+    origin:[ "https://chat-app-frontend-pxia.vercel.app","http://localhost:5173" ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
@@ -188,7 +188,7 @@ if (process.env.NODE_ENV !== "Production")
 
 app.use(
   cors({
-    origin: "https://chat-app-frontend-pxia.vercel.app",
+    origin:[ "https://chat-app-frontend-pxia.vercel.app","http://localhost:5173" ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
