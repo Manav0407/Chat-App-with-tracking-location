@@ -184,7 +184,7 @@ io.on("connection", (socket) => {
 });
 
 if (process.env.NODE_ENV !== "Production")
-  dotenv.config({ path: "E:/MERN/ChatApp/client/src/config/config.env" });
+  dotenv.config({ path: "E:/MERN/ChatApp/server/config/config.env" });
 
 app.use(
   cors({

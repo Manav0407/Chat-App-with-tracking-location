@@ -1,0 +1,21 @@
+PORT = 4000
+
+MONGO_URI = mongodb+srv://Manav0407:Manav0407@cluster0.pxrnyiv.mongodb.net/ChatApp?retryWrites=true&w=majority&appName=Cluster0
+
+CLIENT_ID = 938790818430-ksplsvohit1uptctvfbs7dhtobdh7m0t.apps.googleusercontent.com
+
+CLIENT_SECRET = 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
+
+SESSION_SECRET = akdhkjashdkuhaskdhasnf
+
+JWT_SECRET = aksdjhashfdkahfaflfka
+
+NODE_ENV = development
+
+CLOUD_NAME = dd4iq3xxz
+
+API_KEY = 379625977369347
+
+API_SECRET = UC-9nyu8wOcIi4Teh6Ct_l5APjI
+
+CLIENT_URL = frontend url
