@@ -2,9 +2,6 @@ PORT = 4000
 
 MONGO_URI = mongodb+srv://Manav0407:Manav0407@cluster0.pxrnyiv.mongodb.net/ChatApp?retryWrites=true&w=majority&appName=Cluster0
 
-CLIENT_ID = 938790818430-ksplsvohit1uptctvfbs7dhtobdh7m0t.apps.googleusercontent.com
-
-CLIENT_SECRET = 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
 
 SESSION_SECRET = akdhkjashdkuhaskdhasnf
 
