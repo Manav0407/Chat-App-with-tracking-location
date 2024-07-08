@@ -37,7 +37,10 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin:[ "https://chat-app-frontend-pxia.vercel.app","http://localhost:5173" ],
+    origin: [
+      "https://chat-app-frontend-pxia.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
@@ -59,7 +62,7 @@ io.on("connection", (socket) => {
   try {
     const user = socket.user;
     // console.log(user);
-    userSocketIDs.set(user._id.toString(), socket.id);
+    userSocketIDs.set(user?._id.toString(), socket.id);
 
     //console.log(userSocketIDs);
 
@@ -123,57 +126,50 @@ io.on("connection", (socket) => {
       userche.location.lat = data.lat;
       userche.location.lng = data.lng;
       await userche.save();
+
+      //finding friends
       const myChats = await Chat.find({
         groupChat: false,
-        members: userche._id,
+        members: userche?._id,
       }).populate("members");
       const friends = myChats?.map(({ members }) => {
-      const otherUser = getOtherMember(members, userche._id);
+        const otherUser = getOtherMember(members, userche?._id);
         // console.log(otherUser);
         return {
-          _id: otherUser._id,
-          username: otherUser.username,
-          avatar: otherUser.avatar.url,
+          _id: otherUser?._id,
+          username: otherUser?.username,
+          avatar: otherUser?.avatar.url,
+          location: otherUser?.location,
         };
       });
 
-      // console.log(userSocketIDs);
-
-      friends.forEach((friend) => {
-        const friendSocketId = userSocketIDs.get(friend?._id.toString());
-
-        if (friendSocketId) {
-          io.to(friendSocketId).emit(FRIEND_LOCATION, {
-            userId: userche?._id,
-            username: userche?.username,
-            location:{
-              lat: data.lat,
-              lng: data.lng,
-            }
-          });
+      socket.broadcast.emit(FRIEND_LOCATION, {
+          userId : userche?._id,
+          username: userche?.username,
+          location: userche?.location,
+          avatar : userche?.avatar.url,
         }
-      });
-// console.log("friends", friends);
+      );
     });
 
-    socket.on(CHAT_JOINED,({userId,members})=>{
+    socket.on(CHAT_JOINED, ({ userId, members }) => {
       // console.log("chat joined", userId);
       onlineUsers.add(userId?.toString());
       const memberSocket = getSockets(members);
-      io.to(memberSocket).emit(ONLINE_USER,Array.from(onlineUsers))
-    })
+      io.to(memberSocket).emit(ONLINE_USER, Array.from(onlineUsers));
+    });
 
-    socket.on(CHAT_LEFT,({userId,members})=>{
+    socket.on(CHAT_LEFT, ({ userId, members }) => {
       onlineUsers.delete(userId?.toString());
       const memberSocket = getSockets(members);
-      io.to(memberSocket).emit(ONLINE_USER,Array.from(onlineUsers))
-    })
+      io.to(memberSocket).emit(ONLINE_USER, Array.from(onlineUsers));
+    });
 
     socket.on("disconnect", () => {
       // console.log("user disconnected", socket.id);
-      userSocketIDs.delete(user._id.toString());
-      onlineUsers.delete(user._id.toString());
-      socket.broadcast.emit(ONLINE_USER,Array.from(onlineUsers));
+      userSocketIDs.delete(user?._id.toString());
+      onlineUsers.delete(user?._id.toString());
+      socket.broadcast.emit(ONLINE_USER, Array.from(onlineUsers));
     });
   } catch (error) {
     console.log(error);
@@ -185,7 +181,10 @@ if (process.env.NODE_ENV !== "Production")
 
 app.use(
   cors({
-    origin:[ "https://chat-app-frontend-pxia.vercel.app","http://localhost:5173" ],
+    origin: [
+      "https://chat-app-frontend-pxia.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
