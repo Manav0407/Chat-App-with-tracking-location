@@ -140,11 +140,8 @@ io.on("connection", (socket) => {
       // console.log(userSocketIDs);
 
       friends.forEach((friend) => {
-        const friendSocketId = userSocketIDs.get(friend._id.toString());
+        const friendSocketId = userSocketIDs.get(friend?._id.toString());
 
-        // const friendSocketId = getSockets(friend._id);
-
-        // console.log(friendSocketId);
         if (friendSocketId) {
           io.to(friendSocketId).emit(FRIEND_LOCATION, {
             userId: userche?._id,
