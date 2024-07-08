@@ -56,7 +56,7 @@ export const Signup = async (req, res, next) => {
       token: crypto.randomBytes(16).toString("hex"),
     });
 
-    const url = `http://localhost:5173/user/${user?._id}/verify/${token.token}`;
+    const url = `https://chat-app-frontend-pxia.vercel.app/user/${user?._id}/verify/${token.token}`;
 
     sendMail(user?.email, "Email Varification", url);
 
@@ -143,7 +143,7 @@ export const signin = async (req, res) => {
           token: crypto.randomBytes(16).toString("hex"),
         }).save();
 
-        const url = `http://localhost:5173/user/${user._id}/verify/${token.token}`;
+        const url = `https://chat-app-frontend-pxia.vercel.app/user/${user._id}/verify/${token.token}`;
         sendMail(user.email, "Email Verification", url);
       }
 
