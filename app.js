@@ -25,10 +25,14 @@ import {
   STOP_TYPING,
   UPDATE_LOCATION,
 } from "./constants/event.js";
+import { Chat } from "./models/chat.js";
+import path from "path";
 import { Message } from "./models/message.js";
 import { v2 as cloudinary } from "cloudinary";
 import { socketAuthenticator } from "./middlewares/auth.js";
 
+// MONGO_URI = mongodb+srv://Manav0407:Manav0407@cluster0.pxrnyiv.mongodb.net/ChatApp?retryWrites=true&w=majority&appName=Cluster0
+// mongodb://admin:password@localhost:27071
 const userSocketIDs = new Map();
 const onlineUsers = new Set();
 
@@ -190,15 +194,25 @@ app.use(
   })
 );
 
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your_default_secret_key', // Add this line
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI || 'mongodb://admin:password@localhost:27071/'
+  }),
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
+
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'build')));
+// app.use(express.static(path.join(public, 'build')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 
 // Connect to the database
@@ -207,10 +221,12 @@ connectDB();
 //cloudinary
 
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ,
+  api_key: process.env.CLOUDINARY_API_KEY || '79625977369347',
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+console.log(process.env.CLOUDINARY_API_KEY);
+
 
 // createUser(10);
 
@@ -319,13 +335,14 @@ app.get("/logout", (req, res, next) => {
 
 import userRouter from "./routes/user.Routes.js";
 import chatRouter from "./routes/chat.Routes.js";
-import { Chat } from "./models/chat.js";
+
 
 app.use("/user", userRouter);
 app.use("/chat", chatRouter);
 
 server.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
+  // console.log(`kai ave che : ${process.env.MONGO_URI}`)
 });
 
 export { userSocketIDs };

@@ -44,6 +44,7 @@ try {
     return formatedResult;
 } catch (error) {
 
+    console.log(error); 
     throw new Error("Error uploading file to cloudinary: ",error);
     
 }

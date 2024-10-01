@@ -4,11 +4,10 @@ import { Request } from "../models/request.js";
 import { Token } from "../models/token.js";
 import { sendMail } from "../utils/sendMail.js";
 import crypto from "crypto";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { emitEvent, uploadFileFromCloudinary } from "../utils/features.js";
 import { NEW_REQUEST, REFETCH_CHATS } from "../constants/event.js";
-import { Avatar } from "../middlewares/multer.js";
 import { getOtherMember } from "../lib/helper.js";
 
 export const Signup = async (req, res, next) => {
